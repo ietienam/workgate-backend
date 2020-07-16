@@ -1,0 +1,19 @@
+{
+  "name": "workgate-backend",
+  "version": "1.0.0",
+  "description": "Backend API for WorkGate",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ietienam/workgate-backend.git"
+  },
+  "author": "Ini Etienam",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ietienam/workgate-backend/issues"
+  },
+  "homepage": "https://github.com/ietienam/workgate-backend#readme"
+}
