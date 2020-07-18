@@ -2,9 +2,11 @@
   "name": "workgate-backend",
   "version": "1.0.0",
   "description": "Backend API for WorkGate",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js",
+    "lint": "eslint"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,13 @@
   "bugs": {
     "url": "https://github.com/ietienam/workgate-backend/issues"
   },
-  "homepage": "https://github.com/ietienam/workgate-backend#readme"
+  "homepage": "https://github.com/ietienam/workgate-backend#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "eslint": "^7.4.0"
+  }
 }
