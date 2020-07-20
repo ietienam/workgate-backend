@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 module.exports = {
   getAllUsers: (req, res) => {
     res.status(500).json({

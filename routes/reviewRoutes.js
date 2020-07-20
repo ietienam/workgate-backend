@@ -1,8 +1,11 @@
+/* eslint-disable prettier/prettier */
 const express = require('express');
+
 const router = express.Router();
 const reviewController = require('../controllers/reviewController');
 
-router.param('id', reviewController.checkID);
+//PARAM MIDDLEWARE
+//router.param('id', reviewController.checkID);
 
 router
   .route('/')

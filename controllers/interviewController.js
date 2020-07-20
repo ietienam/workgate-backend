@@ -1,64 +1,60 @@
-const fs = require("fs");
-
-const interviews = JSON.parse(
-  fs.readFileSync(`${__dirname}/../dev-data/data/interviews.json`)
-);
+/* eslint-disable prettier/prettier */
+const Interview = require('../models/interviewModel');
 
 module.exports = {
-  checkID: (req, res, next, val) => {
-    console.log(`Interview ID is ${val}`);
-    const id = parseInt(req.params.id);
-    const interview = interviews.find((el) => el.id === id);
-    if (!interview) {
-      return res.status(404).json({
-        status: "fail",
-        message: "Invalid ID",
+  getAllInterviews: async (req, res) => {
+    try {
+      const interviews = await Interview.find();
+      res.status(200).json({
+        status: "success",
+        results: interviews.length,
+        data: {
+          interviews
+        },
+      });
+    } catch (error) {
+      res.status(404).json({
+        status: 'fail',
+        message: error
       });
     }
-    next();
   },
 
-  getAllInterviews:  (req, res) => {
-    res.status(200).json({
-      status: "success",
-      requestedAt: req.requestTime,
-      results: interviews.length,
-      data: {
-        interviews,
-      },
-    });
+  getInterview: async (req, res) => {
+    try {
+      const interview = await Interview.findById(req.params.id);
+      res.status(200).json({
+        status: "success",
+        data: {
+          interview
+        },
+      });
+    } catch (error) {
+      res.status(404).json({
+        status: "fail",
+        message: error
+      });
+    }
   },
 
-  getInterview: (req, res) => {
-    const id = parseInt(req.params.id);
-    const interview = interviews.find((el) => el.id === id);
-    res.status(200).json({
-      status: "success",
-      requestedAt: req.requestTime,
-      data: {
-        interview,
-      },
-    });
-  },
+    //TODO: GET INTERVIEWS THAT MATCHES SEARCH PARAMETERS
+    //E.G COMPANYNAME, LOCATION, OFFERSTATUS
+    //E.G FIND INTERVIEWS IN ABUJA WITH NO OFFER
 
-  //TODO: ADD ROUTE TO VIEW INTERVIEWS THAT MATCH COMPANYNAME SEARCH
-
-  addInterview: (req, res) => {
-    const newId = interviews[interviews.length - 1].id + 1;
-    const newInterview = Object.assign({ id: newId }, req.body);
-    interviews.push(newInterview);
-    fs.writeFile(
-      `${__dirname}/../dev-data/data/interviews.json`,
-      JSON.stringify(interviews),
-      () => {
-        res.status(201).json({
-          status: "success",
-          requestedAt: req.requestTime,
-          data: {
-            interview: newInterview,
-          },
-        });
-      }
-    );
+  addInterview: async (req, res) => {
+    try {
+      const newInterview = await Interview.create(req.body);
+      res.status(201).json({
+        status: 'success',
+        data: {
+          newInterview
+        }
+      });
+    } catch (error) {
+      res.status(400).json({
+        status: 'fail',
+        message: error
+      });
+    }
   }
 }

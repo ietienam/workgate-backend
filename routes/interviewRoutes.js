@@ -1,8 +1,11 @@
+/* eslint-disable prettier/prettier */
 const express = require('express');
+
 const router = express.Router();
 const interviewController = require('../controllers/interviewController');
 
-router.param('id', interviewController.checkID);
+//PARAM MIDDLEWARE
+//router.param('id', interviewController.checkID);
 
 router
   .route('/')

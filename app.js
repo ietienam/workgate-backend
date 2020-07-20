@@ -1,5 +1,7 @@
-const express = require("express");
-const morgan = require("morgan");
+/* eslint-disable prettier/prettier */
+const express = require('express');
+const morgan = require('morgan');
+
 const reviewRouter = require('./routes/reviewRoutes');
 const interviewRouter = require('./routes/interviewRoutes');
 const userRouter = require('./routes/userRoutes');
@@ -8,12 +10,17 @@ const userRouter = require('./routes/userRoutes');
 const app = express();
 
 //MIDDLEWARES
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
 app.use(express.json());
 
+//TO SERVE STATIC FILES LIKE HTML, IMG, CSS
+app.use(express.static(`${__dirname}/public`));
+
 app.use((req, res, next) => {
-  console.log("Hello from the middleware");
+  console.log('Hello from the middleware');
   next();
 });
 
@@ -23,10 +30,8 @@ app.use((req, res, next) => {
   next();
 });
 
-
 //ROUTES
-
-app.use('/api/v1/reviews',reviewRouter);
+app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/interviews', interviewRouter);
 app.use('/api/v1/users', userRouter);
 
