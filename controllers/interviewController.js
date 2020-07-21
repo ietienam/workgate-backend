@@ -4,7 +4,27 @@ const Interview = require('../models/interviewModel');
 module.exports = {
   getAllInterviews: async (req, res) => {
     try {
-      const interviews = await Interview.find();
+      //1A) FILTERING
+      const queryObj = { ...req.query };
+      const excludedFields = ['page', 'limit', 'fields'];
+      excludedFields.forEach(el => delete queryObj[el]);
+
+      //1B ADVANCED FILTERING
+      let queryStr = JSON.stringify(queryObj);
+      queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, match => `$${match}`);
+
+      let query = Interview.find(JSON.parse(queryStr));
+
+      //2) SORTING
+      if (req.query.sort) {
+        const sortBy = req.query.sort.split(',').join(' ');
+        query = query.sort(sortBy);
+      } else {
+        query = query.sort('-createdAt');
+      }
+
+      const interviews = await query;
+      
       res.status(200).json({
         status: "success",
         results: interviews.length,
