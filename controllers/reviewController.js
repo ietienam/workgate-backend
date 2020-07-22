@@ -1,43 +1,38 @@
 /* eslint-disable prettier/prettier */
 const Review = require('../models/reviewModel');
 
+const APIFeatures = require('../utils/apiFeatures');
+
 module.exports = {
+  aliasTop10Earners: (req, res, next) => {
+    req.query.limit = '10';
+    req.query.sort = '-currentSalary';
+    req.query.fields =
+      'companyName,position,startingSalary,currentSalary,location'; //USER ONLY GETS THESE OPTIONS
+    next();
+  },
+
   getAllReviews: async (req, res) => {
     try {
-      //BUILD QUERY
-      //1A) FILTERING
-      const queryObj = { ...req.query };
-      const excludedFields = ['page', 'limit', 'fields'];
-      excludedFields.forEach(el => { delete queryObj[el] });
-
-      //1B) ADVANCED FILTERING
-      let queryStr = JSON.stringify(queryObj);
-      queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, match => `$${match}`);
-
-      // PERFORM GET REQUEST
-      let query = Review.find(JSON.parse(queryStr));
-
-      //2) SORTING
-      if (req.query.sort) {
-        const sortBy = req.query.sort.split(',').join(' ');
-        query = query.sort(sortBy);
-      } else {
-        query = query.sort('-createdAt');
-      }
-
-      const reviews = await query;
+      //EXECUTE QUERY
+      const features = new APIFeatures(Review.find(), req.query)
+        .filter()
+        .sort()
+        .limitFields()
+        .paginate();
+      const reviews = await features.query;
 
       res.status(200).json({
         status: 'success',
         results: reviews.length,
         data: {
-          reviews
+          reviews,
         },
       });
     } catch (error) {
       res.status(404).json({
         status: 'fail',
-        message: error
+        message: error,
       });
     }
   },
@@ -51,13 +46,13 @@ module.exports = {
       res.status(200).json({
         status: 'success',
         data: {
-          review
+          review,
         },
       });
     } catch (error) {
       res.status(404).json({
         status: 'fail',
-        message: error
+        message: error,
       });
     }
   },
@@ -72,7 +67,7 @@ module.exports = {
       res.status(201).json({
         status: 'success',
         data: {
-          review: newReview
+          review: newReview,
         },
       });
     } catch (error) {

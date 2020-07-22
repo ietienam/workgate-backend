@@ -8,6 +8,10 @@ const reviewController = require('../controllers/reviewController');
 //router.param('id', reviewController.checkID);
 
 router
+  .route('/top-10-earners')
+  .get(reviewController.aliasTop10Earners, reviewController.getAllReviews); //IN NIGERIA & INDIVIDUAL STATES
+
+router
   .route('/')
   .get(reviewController.getAllReviews)
   .post(reviewController.addReview);

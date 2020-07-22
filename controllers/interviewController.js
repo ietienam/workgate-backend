@@ -1,30 +1,17 @@
 /* eslint-disable prettier/prettier */
 const Interview = require('../models/interviewModel');
+const APIFeatures = require('../utils/apiFeatures');
 
 module.exports = {
   getAllInterviews: async (req, res) => {
     try {
-      //1A) FILTERING
-      const queryObj = { ...req.query };
-      const excludedFields = ['page', 'limit', 'fields'];
-      excludedFields.forEach(el => delete queryObj[el]);
+      const features = new APIFeatures(Interview.find(), req.query)
+        .filter()
+        .sort()
+        .limitFields()
+        .paginate();
+      const interviews = await features.query;
 
-      //1B ADVANCED FILTERING
-      let queryStr = JSON.stringify(queryObj);
-      queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, match => `$${match}`);
-
-      let query = Interview.find(JSON.parse(queryStr));
-
-      //2) SORTING
-      if (req.query.sort) {
-        const sortBy = req.query.sort.split(',').join(' ');
-        query = query.sort(sortBy);
-      } else {
-        query = query.sort('-createdAt');
-      }
-
-      const interviews = await query;
-      
       res.status(200).json({
         status: "success",
         results: interviews.length,
