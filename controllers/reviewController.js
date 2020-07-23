@@ -78,7 +78,7 @@ module.exports = {
     }
   },
 
-  getReviewStats: async (req, res) => {
+  getAverageSalaryByLocation: async (req, res) => {
     try {
       const stats = await Review.aggregate([
         //MATCH ALL DOCUMENTS WITH SALARY GTE 0
@@ -116,5 +116,205 @@ module.exports = {
         message: 'Invalid data set',
       });
     }
-  }
+  },
+
+  getAverageSalaryByPosition: async (req, res) => {
+    try {
+      const stats = await Review.aggregate([
+        //MATCH ALL DOCUMENTS WITH SALARY GTE 0
+        {
+          $match: { currentSalary: { $gte: 0 } }
+        },
+        {
+          $group: {
+            _id: { $toUpper: '$position' }, //RETURN DATA BY GROUP E.G BY '$LOCATION' OR '$POSITION' OR EXPERIENCE
+            numOfReviews: { $sum: 1 }, //TOTAL NUMBER OF REVIEWS
+            averageExperience: { $avg: '$yearsOfExperience' },
+            averageSalary: { $avg: '$currentSalary' }, //NATIONAL AVERAGE
+            averageRating: { $avg: '$rating' }, //NATIONAL AVERAGE
+            minSalary: { $min: '$currentSalary' }, //NAYIONAL AVERAGE
+            maxSalary: { $max: '$currentSalary' } //NATIONAL AVERAGE
+          }
+        },
+        {
+          $sort: { averageSalary: -1 } //HIGHEST SALARY IN PIPELINE AGGREGATION COMES FIRST
+        },
+        /*//SHOW DOCUMENTS WITH LOCATION NOT EQUAL TO ABUJA
+        {
+          $match: { _id: { $ne: 'ABUJA' } }
+        },*/
+      ]);
+      res.status(200).json({
+        status: 'success',
+        data: {
+          stats,
+        },
+      });
+    } catch (error) {
+      res.status(400).json({
+        status: 'fail',
+        message: 'Invalid data set',
+      });
+    }
+  },
+
+  getAverageSalaryByYearsOfExperience: async (req, res) => {
+    try {
+      const stats = await Review.aggregate([
+        //MATCH ALL DOCUMENTS WITH SALARY GTE 0
+        {
+          $match: { currentSalary: { $gte: 0 } }
+        },
+        {
+          $group: {
+            _id: { $toUpper: '$yearsOfExperience' }, //RETURN DATA BY GROUP E.G BY '$LOCATION' OR '$POSITION' OR EXPERIENCE
+            numOfReviews: { $sum: 1 }, //TOTAL NUMBER OF REVIEWS
+            averageExperience: { $avg: '$yearsOfExperience' },
+            averageSalary: { $avg: '$currentSalary' }, //NATIONAL AVERAGE
+            averageRating: { $avg: '$rating' }, //NATIONAL AVERAGE
+            minSalary: { $min: '$currentSalary' }, //NAYIONAL AVERAGE
+            maxSalary: { $max: '$currentSalary' } //NATIONAL AVERAGE
+          }
+        },
+        {
+          $sort: { averageSalary: -1 } //HIGHEST SALARY IN PIPELINE AGGREGATION COMES FIRST
+        },
+        /*//SHOW DOCUMENTS WITH LOCATION NOT EQUAL TO ABUJA
+        {
+          $match: { _id: { $ne: 'ABUJA' } }
+        },*/
+      ]);
+      res.status(200).json({
+        status: 'success',
+        data: {
+          stats,
+        },
+      });
+    } catch (error) {
+      res.status(400).json({
+        status: 'fail',
+        message: 'Invalid data set',
+      });
+    }
+  },
+
+  getNationalAverage: async (req, res) => {
+    try {
+      const stats = await Review.aggregate([
+        //MATCH ALL DOCUMENTS WITH SALARY GTE 0
+        {
+          $match: { currentSalary: { $gte: 0 } }
+        },
+        {
+          $group: {
+            _id: null, //GENERAL AVERAGE
+            numOfReviews: { $sum: 1 }, //TOTAL NUMBER OF REVIEWS
+            averageExperience: { $avg: '$yearsOfExperience' },
+            averageSalary: { $avg: '$currentSalary' }, //NATIONAL AVERAGE
+            averageRating: { $avg: '$rating' }, //NATIONAL AVERAGE
+            minSalary: { $min: '$currentSalary' }, //NAYIONAL AVERAGE
+            maxSalary: { $max: '$currentSalary' } //NATIONAL AVERAGE
+          }
+        },
+        {
+          $sort: { averageSalary: -1 } //HIGHEST SALARY IN PIPELINE AGGREGATION COMES FIRST
+        },
+        /*//SHOW DOCUMENTS WITH LOCATION NOT EQUAL TO ABUJA
+        {
+          $match: { _id: { $ne: 'ABUJA' } }
+        },*/
+      ]);
+      res.status(200).json({
+        status: 'success',
+        data: {
+          stats,
+        },
+      });
+    } catch (error) {
+      res.status(400).json({
+        status: 'fail',
+        message: 'Invalid data set',
+      });
+    }
+  },
+
+  getRemoteAverage: async (req, res) => {
+    try {
+      const stats = await Review.aggregate([
+        //MATCH ALL DOCUMENTS WITH SALARY GTE 0
+        {
+          $match: { currentSalary: { $gte: 0 } }
+        },
+        {
+          $group: {
+            _id: { $toUpper: '$remote' }, //AGGREGATE BY FULLY OR PARTIAL OR NOT REMOTE
+            numOfReviews: { $sum: 1 }, //TOTAL NUMBER OF REVIEWS
+            averageExperience: { $avg: '$yearsOfExperience' },
+            averageSalary: { $avg: '$currentSalary' }, //NATIONAL AVERAGE
+            averageRating: { $avg: '$rating' }, //NATIONAL AVERAGE
+            minSalary: { $min: '$currentSalary' }, //NAYIONAL AVERAGE
+            maxSalary: { $max: '$currentSalary' }, //NATIONAL AVERAGE
+          }
+        },
+        {
+          $sort: { averageSalary: -1 } //HIGHEST SALARY IN PIPELINE AGGREGATION COMES FIRST
+        },
+        /*//SHOW DOCUMENTS WITH LOCATION NOT EQUAL TO ABUJA
+        {
+          $match: { _id: { $ne: 'ABUJA' } }
+        },*/
+      ]);
+      res.status(200).json({
+        status: 'success',
+        data: {
+          stats,
+        },
+      });
+    } catch (error) {
+      res.status(400).json({
+        status: 'fail',
+        message: 'Invalid data set',
+      });
+    }
+  },
+
+  getPromotedAverage: async (req, res) => {
+    try {
+      const stats = await Review.aggregate([
+        //MATCH ALL DOCUMENTS WITH SALARY GTE 0
+        {
+          $match: { currentSalary: { $gte: 0 } }
+        },
+        {
+          $group: {
+            _id: '$promoted', //AGGREGATE BY FULLY OR PARTIAL OR NOT REMOTE
+            numOfReviews: { $sum: 1 }, //TOTAL NUMBER OF REVIEWS
+            averageExperience: { $avg: '$yearsOfExperience' },
+            averageSalary: { $avg: '$currentSalary' }, //NATIONAL AVERAGE
+            averageRating: { $avg: '$rating' }, //NATIONAL AVERAGE
+            minSalary: { $min: '$currentSalary' }, //NAYIONAL AVERAGE
+            maxSalary: { $max: '$currentSalary' }, //NATIONAL AVERAGE
+          }
+        },
+        {
+          $sort: { averageSalary: -1 } //HIGHEST SALARY IN PIPELINE AGGREGATION COMES FIRST
+        },
+        /*//SHOW DOCUMENTS WITH LOCATION NOT EQUAL TO ABUJA
+        {
+          $match: { _id: { $ne: 'ABUJA' } }
+        },*/
+      ]);
+      res.status(200).json({
+        status: 'success',
+        data: {
+          stats,
+        },
+      });
+    } catch (error) {
+      res.status(400).json({
+        status: 'fail',
+        message: 'Invalid data set',
+      });
+    }
+  },
 };

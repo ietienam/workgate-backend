@@ -12,8 +12,28 @@ router
   .get(reviewController.aliasTop10Earners, reviewController.getAllReviews); //IN NIGERIA & INDIVIDUAL STATES
 
 router
-  .route('/review-stats')
-  .get(reviewController.getReviewStats);
+  .route('/average-location')
+  .get(reviewController.getAverageSalaryByLocation);
+
+router
+  .route('/average-remote')
+  .get(reviewController.getRemoteAverage);
+
+router
+  .route('/average-promoted')
+  .get(reviewController.getPromotedAverage);
+
+router
+  .route('/average-position')
+  .get(reviewController.getAverageSalaryByPosition);
+
+router
+  .route('/average-experience')
+  .get(reviewController.getAverageSalaryByYearsOfExperience);
+
+router
+  .route('/average-national')
+  .get(reviewController.getNationalAverage);
 
 router
   .route('/')
