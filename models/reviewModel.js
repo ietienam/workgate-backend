@@ -15,8 +15,7 @@ const reviewSchema = new mongoose.Schema({
   },
   position: {
     type: String,
-    trim: true,
-    default: 'Annonymous',
+    required: [true, 'A review must show your position'],
   },
   location: {
     type: String,
@@ -53,10 +52,9 @@ const reviewSchema = new mongoose.Schema({
     type: Boolean,
     required: [true, 'A review must show if you have been promoted'],
   },
-  employmentDuration: {
-    type: String,
-    trim: true,
-    default: 'Rather not say',
+  yearsOfExperience: {
+    type: Number,
+    required: [true, 'A review must show your years of experience'],
   },
   universityGraduate: {
     type: Boolean,

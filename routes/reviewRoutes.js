@@ -12,6 +12,10 @@ router
   .get(reviewController.aliasTop10Earners, reviewController.getAllReviews); //IN NIGERIA & INDIVIDUAL STATES
 
 router
+  .route('/review-stats')
+  .get(reviewController.getReviewStats);
+
+router
   .route('/')
   .get(reviewController.getAllReviews)
   .post(reviewController.addReview);
