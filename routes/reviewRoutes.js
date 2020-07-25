@@ -16,6 +16,14 @@ router
   .get(reviewController.getAverageSalaryByLocation);
 
 router
+  .route('/average-position-query')
+  .get(reviewController.getAverageSalaryByPositionQuery);
+
+router
+  .route('/all-positions')
+  .get(reviewController.getAllPositions);
+
+router
   .route('/average-remote')
   .get(reviewController.getRemoteAverage);
 
