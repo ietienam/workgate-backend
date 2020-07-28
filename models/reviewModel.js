@@ -5,6 +5,7 @@ const reviewSchema = new mongoose.Schema({
   companyName: {
     type: String,
     trim: true,
+    lowercase: true,
     //unique: true
     required: [true, 'A review must show the company name'],
     maxLength: [40, 'A company name must have at most 40 characters'],
@@ -12,6 +13,7 @@ const reviewSchema = new mongoose.Schema({
   },
   position: {
     type: String,
+    lowercase: true,
     required: [true, 'A review must show your position'],
     maxlength: [40, 'A position must have at most 40 characters'],
     minLength: [5, 'A position must have at least 5 characters']

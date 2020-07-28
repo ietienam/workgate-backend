@@ -5,6 +5,7 @@ const interviewSchema = new mongoose.Schema({
   companyName: {
     type: String,
     trim: true,
+    lowercase: true,
     required: [true, 'An interview should show a company name']
   },
   rating: {
