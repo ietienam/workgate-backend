@@ -6,16 +6,29 @@ const authController = require('../controllers/authController');
 const router = express.Router();
 
 router.route('/signup').post(authController.signUp);
-
 router.route('/login').post(authController.logIn);
+router.patch(
+  '/updatePassword',
+  authController.protect,
+  authController.updatePassword
+);
 
-router.route('/').get(authController.protect, userController.getAllUsers);
+router.patch('/forgotPassword', authController.forgotPassword);
+router.patch('/resetPassword/:token', authController.resetPassword);
+
+router
+  .route('/')
+  .get(
+    authController.protect,
+    authController.restrictTo('admin'),
+    userController.getAllUsers
+  );
 
 //TODO: REPLACE TO SEARCH BY NAME TO GET USERS THAT MATCH
 router
   .route('/:id')
   .get(userController.getUser)
-  .patch(userController.editUser)
+  .patch(authController.protect, userController.editUser)
   .delete(
     authController.protect,
     authController.restrictTo(['admin']),
