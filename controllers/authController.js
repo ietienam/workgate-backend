@@ -13,6 +13,18 @@ const signToken = (id) => {
   });
 };
 
+const createSendToken = (user, statusCode, res) => {
+  const token = signToken(user._id);
+
+  res.status(statusCode).json({
+    status: 'success',
+    token,
+    data: {
+      user,
+    },
+  });
+};
+
 module.exports = {
   signUp: catchAsync(async (req, res, next) => {
     const newUser = await User.create({
@@ -23,15 +35,7 @@ module.exports = {
       confirmPassword: req.body.confirmPassword,
     });
 
-    const token = signToken(newUser._id);
-
-    res.status(201).json({
-      status: 'success',
-      token,
-      data: {
-        user: newUser,
-      },
-    });
+    createSendToken(newUser._id, 201, res);
   }),
 
   logIn: catchAsync(async (req, res, next) => {
@@ -47,11 +51,7 @@ module.exports = {
     }
 
     //3) IF EVERYTHING IS OK, SEND TOKEN TO CLIENT
-    const token = signToken(user._id);
-    res.status(200).json({
-      status: 'success',
-      token,
-    });
+    createSendToken(user._id, 200, res);
   }),
 
   protect: catchAsync(async (req, res, next) => {
@@ -174,11 +174,7 @@ module.exports = {
 
     // 3) Update changedPasswordAt property for the user
     // 4) Log the user in, send JWT
-    const token = signToken(user._id);
-    res.status(200).json({
-      status: 'success',
-      token,
-    });
+    createSendToken(user._id, 200, res);
   }),
 
   updatePassword: catchAsync(async (req, res, next) => {
@@ -199,10 +195,6 @@ module.exports = {
     await user.save();
 
     // 4) Log the user in, send JWT
-    const token = signToken(user._id);
-    res.status(200).json({
-      status: 'success',
-      token,
-    });
+    createSendToken(user._id, 200, res);
   }),
 };

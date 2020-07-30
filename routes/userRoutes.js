@@ -16,6 +16,8 @@ router.patch(
 router.patch('/forgotPassword', authController.forgotPassword);
 router.patch('/resetPassword/:token', authController.resetPassword);
 
+router.patch('/updateMe', authController.protect, userController.updateMe);
+
 router
   .route('/')
   .get(
@@ -24,7 +26,6 @@ router
     userController.getAllUsers
   );
 
-//TODO: REPLACE TO SEARCH BY NAME TO GET USERS THAT MATCH
 router
   .route('/:id')
   .get(userController.getUser)
