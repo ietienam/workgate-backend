@@ -15,13 +15,22 @@ const interviewSchema = new mongoose.Schema({
     required: [true, 'An interview must show a rating']
   },
   location: {
-    type: String,
-    trim: true,
-    required: [true, 'An interview must have a location']
+    // GeoJSON
+    type: {
+      type: String,
+      default: 'Point',
+      enum: ['Point']
+    },
+    coordinates: [Number],
+    address: String
   },
   offerStatus: {
     type: String,
     trim: true,
+    enum: {
+      values: ['Accepted', 'Rejected', 'No-Offer'],
+      message: 'Offer status must either bet Accepted, Rejected or No-Offer'
+    },
     required: [true, 'An interview should show an offer status']
   },
   interviewQuestions: {
@@ -44,7 +53,28 @@ const interviewSchema = new mongoose.Schema({
     type: String,
     trim: true,
     default: 'No additional comments'
+  },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: [true, 'Interview must belong to a user']
   }
+}, {
+  toJSON: {
+    virtuals: true
+  },
+  toObject: {
+    virtuals: true
+  }
+});
+
+interviewSchema.pre(/^find/, function(next) {
+  this.populate({
+    path: 'user',
+    select: '-__v -passwordChangedAt'
+  });
+
+  next();
 });
 
 const Interview = mongoose.model('Interview', interviewSchema);

@@ -56,7 +56,7 @@ module.exports = {
       '-passwordResetToken',
       '-passwordChangedAt',
       '-passwordResetExpires',
-      '-__v'
+      '-__v',
     ]);
 
     res.status(200).json({
@@ -64,6 +64,15 @@ module.exports = {
       data: {
         user: updatedUser,
       },
+    });
+  }),
+
+  deleteMe: catchAsync(async (req, res, next) => {
+    await User.findByIdAndUpdate(req.user.id, { active: false });
+
+    res.status(204).json({
+      status: 'success',
+      data: null,
     });
   }),
 

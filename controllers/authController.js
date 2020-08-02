@@ -15,6 +15,18 @@ const signToken = (id) => {
 
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
+  const cookieOptions = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+  };
+  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+
+  res.cookie('jwt', token, cookieOptions);
+
+  //remove user password from output
+  user.password = undefined;
 
   res.status(statusCode).json({
     status: 'success',
@@ -35,7 +47,7 @@ module.exports = {
       confirmPassword: req.body.confirmPassword,
     });
 
-    createSendToken(newUser._id, 201, res);
+    createSendToken(newUser, 201, res);
   }),
 
   logIn: catchAsync(async (req, res, next) => {
@@ -51,7 +63,7 @@ module.exports = {
     }
 
     //3) IF EVERYTHING IS OK, SEND TOKEN TO CLIENT
-    createSendToken(user._id, 200, res);
+    createSendToken(user, 200, res);
   }),
 
   protect: catchAsync(async (req, res, next) => {
@@ -174,7 +186,7 @@ module.exports = {
 
     // 3) Update changedPasswordAt property for the user
     // 4) Log the user in, send JWT
-    createSendToken(user._id, 200, res);
+    createSendToken(user, 200, res);
   }),
 
   updatePassword: catchAsync(async (req, res, next) => {
@@ -195,6 +207,6 @@ module.exports = {
     await user.save();
 
     // 4) Log the user in, send JWT
-    createSendToken(user._id, 200, res);
+    createSendToken(user, 200, res);
   }),
 };
