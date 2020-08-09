@@ -30,6 +30,23 @@ module.exports = {
     });
   }),
 
+  getMe: (req, res, next) => {
+    req.params.id = req.user.id;
+    next();
+  },
+
+  getUser: catchAsync(async (req, res, next) => {
+    const user = await User.findById(req.params.id);
+    if (!user) return next(new AppError('No user found for this ID', 404));
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        user
+      }
+    });
+  }),
+
   updateMe: catchAsync(async (req, res, next) => {
     // 1) Create error if user POSTs password data
     if (req.body.password || req.body.confirmPassword) {
@@ -75,20 +92,6 @@ module.exports = {
       data: null,
     });
   }),
-
-  getUser: (req, res) => {
-    res.status(500).json({
-      status: 'err',
-      message: 'This route is not yet defined',
-    });
-  },
-
-  editUser: (req, res) => {
-    res.status(500).json({
-      status: 'err',
-      message: 'This route is not yet defined',
-    });
-  },
 
   deleteUser: catchAsync(async (req, res, next) => {
     const user = await User.findByIdAndDelete(req.params.id);

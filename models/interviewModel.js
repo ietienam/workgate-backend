@@ -68,15 +68,6 @@ const interviewSchema = new mongoose.Schema({
   }
 });
 
-interviewSchema.pre(/^find/, function(next) {
-  this.populate({
-    path: 'user',
-    select: '-__v -passwordChangedAt'
-  });
-
-  next();
-});
-
 const Interview = mongoose.model('Interview', interviewSchema);
 
 module.exports = Interview;

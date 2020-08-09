@@ -66,6 +66,7 @@ const userSchema = new mongoose.Schema(
     },
   }
 );
+
 userSchema.virtual('fullname').get(function () {
   return `${this.firstName} ${this.lastName}`;
 });
