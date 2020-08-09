@@ -8,7 +8,7 @@ module.exports = class Email {
     this.to = user.email;
     this.firstName = user.firstName;
     this.url = url;
-    this.from = `Fundezer <${process.env.EMAIL_FROM}>`;
+    this.from = `WorkGate <${process.env.EMAIL_FROM}>`;
   }
 
   newTransport() {
