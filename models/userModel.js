@@ -71,6 +71,18 @@ userSchema.virtual('fullname').get(function () {
   return `${this.firstName} ${this.lastName}`;
 });
 
+userSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'user',
+  localField: '_id'
+});
+
+userSchema.virtual('interviews', {
+  ref: 'Intereview',
+  foreignField: 'user',
+  localField: '_id'
+});
+
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
 

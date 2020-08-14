@@ -20,7 +20,7 @@ module.exports = {
       .sort()
       .limitFields()
       .paginate();
-    const reviews = await features.query;
+    const reviews = await features.query.select('-user');
 
     res.status(200).json({
       status: 'success',
@@ -35,7 +35,7 @@ module.exports = {
     //TODO: CHANGE TO GET REVIEWS THAT MATCHES SEARCH PARAMETERS
     //E.G COMPANYNAME, LOCATION, CURRENTsALARY, POSITION, E.T.C
     //E.G FIND REVIEWS IN ABUJA WITH SALARY >= 150K
-    const review = await Review.findById(req.params.id);
+    const review = await (await Review.findById(req.params.id));
     if (!review) {
       return next(new AppError('No review found for this ID', 404));
     }
@@ -72,7 +72,7 @@ module.exports = {
           numOfReviews: { $sum: 1 }, //TOTAL NUMBER OF REVIEWS
           averageExperience: { $avg: '$yearsOfExperience' },
           averageSalary: { $avg: '$currentSalary' }, //NATIONAL AVERAGE
-          averageRating: { $avg: '$rating' }, //NATIONAL AVERAGE
+          //averageRating: { $avg: '$rating' }, //NATIONAL AVERAGE
           minSalary: { $min: '$currentSalary' }, //NAYIONAL AVERAGE
           maxSalary: { $max: '$currentSalary' }, //NATIONAL AVERAGE
         },
@@ -105,7 +105,7 @@ module.exports = {
           numOfReviews: { $sum: 1 }, //TOTAL NUMBER OF REVIEWS
           averageExperience: { $avg: '$yearsOfExperience' },
           averageSalary: { $avg: '$currentSalary' }, //NATIONAL AVERAGE
-          averageRating: { $avg: '$rating' }, //NATIONAL AVERAGE
+          //averageRating: { $avg: '$rating' }, //NATIONAL AVERAGE
           minSalary: { $min: '$currentSalary' }, //NAYIONAL AVERAGE
           maxSalary: { $max: '$currentSalary' }, //NATIONAL AVERAGE
         },
@@ -164,7 +164,7 @@ module.exports = {
           _id: '$yearsOfExperience', //RETURN DATA BY GROUP E.G BY '$LOCATION' OR '$POSITION' OR EXPERIENCE
           numOfReviews: { $sum: 1 }, //TOTAL NUMBER OF REVIEWS
           averageSalary: { $avg: '$currentSalary' }, //NATIONAL AVERAGE
-          averageRating: { $avg: '$rating' }, //NATIONAL AVERAGE
+          //averageRating: { $avg: '$rating' }, //NATIONAL AVERAGE
           minSalary: { $min: '$currentSalary' }, //NAYIONAL AVERAGE
           maxSalary: { $max: '$currentSalary' }, //NATIONAL AVERAGE
         },
@@ -197,7 +197,7 @@ module.exports = {
           numOfReviews: { $sum: 1 }, //TOTAL NUMBER OF REVIEWS
           averageExperience: { $avg: '$yearsOfExperience' },
           averageSalary: { $avg: '$currentSalary' }, //NATIONAL AVERAGE
-          averageRating: { $avg: '$rating' }, //NATIONAL AVERAGE
+          //averageRating: { $avg: '$rating' }, //NATIONAL AVERAGE
           minSalary: { $min: '$currentSalary' }, //NAYIONAL AVERAGE
           maxSalary: { $max: '$currentSalary' }, //NATIONAL AVERAGE
         },
@@ -230,7 +230,7 @@ module.exports = {
           numOfReviews: { $sum: 1 }, //TOTAL NUMBER OF REVIEWS
           averageExperience: { $avg: '$yearsOfExperience' },
           averageSalary: { $avg: '$currentSalary' }, //NATIONAL AVERAGE
-          averageRating: { $avg: '$rating' }, //NATIONAL AVERAGE
+          //averageRating: { $avg: '$rating' }, //NATIONAL AVERAGE
           minSalary: { $min: '$currentSalary' }, //NAYIONAL AVERAGE
           maxSalary: { $max: '$currentSalary' }, //NATIONAL AVERAGE
         },
@@ -263,7 +263,7 @@ module.exports = {
           numOfReviews: { $sum: 1 }, //TOTAL NUMBER OF REVIEWS
           averageExperience: { $avg: '$yearsOfExperience' },
           averageSalary: { $avg: '$currentSalary' }, //NATIONAL AVERAGE
-          averageRating: { $avg: '$rating' }, //NATIONAL AVERAGE
+          //averageRating: { $avg: '$rating' }, //NATIONAL AVERAGE
           minSalary: { $min: '$currentSalary' }, //NAYIONAL AVERAGE
           maxSalary: { $max: '$currentSalary' }, //NATIONAL AVERAGE
         },
@@ -296,7 +296,7 @@ module.exports = {
           numOfReviews: { $sum: 1 }, //TOTAL NUMBER OF REVIEWS
           averageExperience: { $avg: '$yearsOfExperience' },
           averageSalary: { $avg: '$currentSalary' }, //NATIONAL AVERAGE
-          averageRating: { $avg: '$rating' }, //NATIONAL AVERAGE
+          //averageRating: { $avg: '$rating' }, //NATIONAL AVERAGE
           minSalary: { $min: '$currentSalary' }, //NAYIONAL AVERAGE
           maxSalary: { $max: '$currentSalary' }, //NATIONAL AVERAGE
         },

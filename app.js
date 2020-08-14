@@ -12,6 +12,7 @@ const globalErrorHandler = require('./controllers/errController');
 const reviewRouter = require('./routes/reviewRoutes');
 const interviewRouter = require('./routes/interviewRoutes');
 const userRouter = require('./routes/userRoutes');
+const indexRouter = require('./routes/index');
 
 //VARIABLES
 const app = express();
@@ -67,6 +68,7 @@ app.use((req, res, next) => {
 });
 
 //ROUTES
+app.use('/api/v1', indexRouter);
 app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/interviews', interviewRouter);
 app.use('/api/v1/users', userRouter);

@@ -28,20 +28,19 @@ router
   .route('/')
   .get(
     authController.protect,
-    authController.restrictTo('user'),
+    authController.restrictTo('admin'),
     userController.getAllUsers
   );
 router
   .route('/:id')
-  .get(userController.getUser)
-  .patch(
+  .get(authController.restrictTo('admin'), userController.getUser)
+  /*.patch(
     authController.protect,
     authController.restrictTo('admin'),
-    userController.editUser
-  )
+  )*/
   .delete(
     authController.protect,
-    authController.restrictTo(['admin']),
+    authController.restrictTo('admin'),
     userController.deleteUser
   );
 

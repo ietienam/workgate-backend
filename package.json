@@ -13,7 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/ietienam/workgate-backend.git"
   },
-  "author": "Ini Etienam",
+  "author": "Ini Etienam <ietienam@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ietienam/workgate-backend/issues"

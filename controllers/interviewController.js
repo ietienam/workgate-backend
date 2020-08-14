@@ -11,7 +11,7 @@ module.exports = {
       .sort()
       .limitFields()
       .paginate();
-    const interviews = await features.query;
+    const interviews = await features.query.select('-user');
 
     res.status(200).json({
       status: 'success',

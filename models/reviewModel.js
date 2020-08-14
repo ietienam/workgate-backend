@@ -19,14 +19,8 @@ const reviewSchema = new mongoose.Schema({
     minLength: [5, 'A position must have at least 5 characters']
   },
   location: {
-    // GeoJSON
-    type: {
-      type: String,
-      default: 'Point',
-      enum: ['Point']
-    },
-    coordinates: [Number],
-    address: String
+    type: String,
+    required: [true, 'A review must have a location']
   },
   startingSalary: {
     type: Number,
@@ -79,6 +73,11 @@ const reviewSchema = new mongoose.Schema({
       message: 'Work must either be fully, partial or not remote'
     }
   },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: [true, 'Review must belong to a user']
+  }
 }, {
   toJSON: {
     virtuals: true
@@ -91,6 +90,13 @@ const reviewSchema = new mongoose.Schema({
 reviewSchema.virtual('annualSalary').get(function(){//ARROW FUNCTIONS DONT HAVE ACCESS TO "THIS"
   return this.currentSalary * 12;
 });
+
+/*reviewSchema.pre(/^find/, function(next) {
+  // this points to the current query
+  if (this.role !== 'admin') this.select('-user');
+  if (this.role === 'admin') this.populate('user');
+  next();
+});*/
 
 
 const Review = mongoose.model('Review', reviewSchema);

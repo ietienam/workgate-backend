@@ -36,7 +36,7 @@ module.exports = {
   },
 
   getUser: catchAsync(async (req, res, next) => {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).populate('reviews');
     if (!user) return next(new AppError('No user found for this ID', 404));
 
     res.status(200).json({
@@ -59,7 +59,7 @@ module.exports = {
     }
 
     // 2) Filtered out unwanted fields names that are not allowed to be updated
-    const filteredBody = filterObj(req.body, 'firstName', 'lastName', 'email');
+    const filteredBody = filterObj(req.body, 'firstName', 'lastName');
 
     // 3) Update user document
     const updatedUser = await User.findByIdAndUpdate(

@@ -15,14 +15,8 @@ const interviewSchema = new mongoose.Schema({
     required: [true, 'An interview must show a rating']
   },
   location: {
-    // GeoJSON
-    type: {
-      type: String,
-      default: 'Point',
-      enum: ['Point']
-    },
-    coordinates: [Number],
-    address: String
+    type: String,
+    required: [true, 'A review must have a location']
   },
   offerStatus: {
     type: String,
@@ -67,6 +61,13 @@ const interviewSchema = new mongoose.Schema({
     virtuals: true
   }
 });
+
+/*interviewSchema.pre(/^find/, function(next) {
+  // this points to the current query
+  if (this.role !== 'admin') this.select('-user');
+  if (this.role === 'admin') this.populate('user');
+  next();
+});*/
 
 const Interview = mongoose.model('Interview', interviewSchema);
 
