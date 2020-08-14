@@ -1,0 +1,16 @@
+[
+  {
+    "employmentDuration": "1-2years",
+    "companyName": "Sanstonz",
+    "location": "Abuja",
+    "currentStaff": true,
+    "startingSalary": 50000,
+    "currentSalary": 100000,
+    "recommendsJob": false,
+    "universityGraduate": false,
+    "modeOfEmployment": "Family/friends",
+    "remote": "No",
+    "typeOfEmployment": "Part-time",
+    "promoted": false
+  }
+]
