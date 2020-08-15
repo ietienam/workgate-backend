@@ -75,6 +75,14 @@ module.exports = {
     createSendToken(user, 200, res);
   }),
 
+  logout: (req, res) => {
+    res.cookie('jwt', 'loggedout', {
+      expires: new Date(Date.now() + 10 * 1000),
+      httpOnly: true
+    });
+    res.status(200).json({ status: 'success' });
+  },
+
   protect: catchAsync(async (req, res, next) => {
     //GETTING TOKEN AND CHECK IF ITS THERE
     let token;
