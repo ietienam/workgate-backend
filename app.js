@@ -7,6 +7,8 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
+const cors = require('cors');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errController');
@@ -16,6 +18,16 @@ const indexRouter = require('./routes/index');
 
 //VARIABLES
 const app = express();
+
+app.enable('trust proxy');
+
+app.use(cors({
+  origin: 'https://workgate.netlify.app'
+}));
+
+app.options('*', cors({
+  origin: 'https://workgate.netlify.app'
+}));
 
 //GLOBAL MIDDLEWARES
 // Set security HTTP headers
@@ -60,6 +72,8 @@ app.use(
 
 //TO SERVE STATIC FILES LIKE HTML, IMG, CSS
 app.use(express.static(`${__dirname}/public`));
+
+app.use(compression());
 
 //test middleware
 app.use((req, res, next) => {
