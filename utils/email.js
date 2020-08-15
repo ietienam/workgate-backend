@@ -17,7 +17,6 @@ module.exports = class Email {
       return nodemailer.createTransport({
         host: process.env.PEPIPOST_HOST,
         port: process.env.PEPIPOST_PORT,
-        secure: process.env.PEPIPOST_SECURE,
         auth: {
           user: process.env.PEPIPOST_USERNAME,
           pass: process.env.PEPIPOST_PASSWORD

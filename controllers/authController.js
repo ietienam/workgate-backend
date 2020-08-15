@@ -38,6 +38,11 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 module.exports = {
+  setUserIds: (req, res, next) => {
+    if (!req.body.user) req.body.user = req.user.id;
+    next();
+  },
+
   signUp: catchAsync(async (req, res, next) => {
     const newUser = await User.create({
       firstName: req.body.firstName,
@@ -79,7 +84,7 @@ module.exports = {
       req.headers.authorization.startsWith('Bearer')
     ) {
       token = req.headers.authorization.split(' ')[1];
-    }
+    } else if ( req.cookies.jwt)
 
     if (!token) return next(new AppError('Access denied! Please logIn', 401));
 
